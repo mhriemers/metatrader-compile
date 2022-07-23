@@ -4,5 +4,25 @@
   },
   "npm": {
     "publish": false
+  },
+  "hooks": {
+    "before:version:init": "echo before:version:init",
+    "after:version:init": "echo after:version:init",
+    "before:version:bump": "echo before:version:bump",
+    "after:version:bump": "echo after:version:bump",
+    "before:version:release": "echo before:version:release",
+    "after:version:release": "echo after:version:release",
+    "before:git:init": "echo before:git:init",
+    "after:git:init": "echo after:git:init",
+    "before:git:bump": "echo before:git:bump",
+    "after:git:bump": "echo after:git:bump",
+    "before:git:release": "echo before:git:release",
+    "after:git:release": "echo after:git:release",
+    "before:github:init": "echo before:github:init",
+    "after:github:init": "echo after:github:init",
+    "before:github:bump": "echo before:github:bump",
+    "after:github:bump": "echo after:github:bump",
+    "before:github:release": "echo before:github:release",
+    "after:github:release": "echo after:github:release"
   }
 }
