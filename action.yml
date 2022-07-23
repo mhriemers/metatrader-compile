@@ -1,0 +1,7 @@
+name: 'Run MetaTrader Action'
+description: 'Run MetaTrader compiler and backtester'
+author: 'Unlimited Trading'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
