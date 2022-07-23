@@ -1,3 +1,3 @@
 test('empty test', () => {
-    expect(true).toBeTruthy
-});
+  expect(true).toBeTruthy
+})

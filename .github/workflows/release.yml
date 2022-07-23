@@ -41,7 +41,7 @@ jobs:
         run: npm run ci
 
       # Create a detached commit containing the built artifacts and tag it with
-      # the release. Note: the fact that the branch is locally updated will not 
+      # the release. Note: the fact that the branch is locally updated will not
       # be relayed (pushed) to origin
       - name: Commit to release branch
         id: release_info
@@ -61,7 +61,7 @@ jobs:
           # the tag that `npm version` made for us in a previous step
           git tag -f -a -m "Release $TAG" $TAG
           git push origin $TAG
-      
+
       # Finally, create the release using the tag created above
       - name: Create the Release
         uses: softprops/action-gh-release@v1
