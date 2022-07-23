@@ -1,6 +1,6 @@
 name: 'Run MetaTrader Action'
 description: 'Run MetaTrader compiler and backtester'
-author: 'Unlimited Trading'
+author: 'Martijn Riemers'
 
 runs:
   using: 'node16'
