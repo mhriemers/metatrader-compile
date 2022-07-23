@@ -2,18 +2,6 @@
   "github": {
     "release": true
   },
-  "plugins": {
-    "@release-it/bumper": {
-      "in": {
-        "file": "VERSION",
-        "type": "text/plain"
-      },
-      "out": {
-        "file": "VERSION",
-        "type": "text/plain"
-      }
-    }
-  },
   "npm": {
     "publish": false
   }

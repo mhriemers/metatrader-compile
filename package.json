@@ -4,17 +4,31 @@
   "private": true,
   "main": "lib/main.js",
   "scripts": {
+    "clean": "rm -rf dist lib",
+    "format": "prettier --write .",
+    "format-check": "prettier --check .",
     "build": "tsc",
-    "release": "release-it"
+    "package": "ncc build --source-map --license licenses.txt",
+    "test": "jest",
+    "release": "release-it",
+    "all": "npm test && npm run build && npm run package",
+    "ci": "npm run clean && npm ci && npm run all"
   },
+  "files": [
+    "lib/"
+  ],
   "dependencies": {
     "@actions/core": "^1.4.0",
     "@actions/exec": "^1.1.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@release-it/bumper": "^4.0.0",
+    "@types/jest": "^28.1.6",
+    "@vercel/ncc": "^0.34.0",
+    "jest": "^28.1.3",
+    "prettier": "2.7.1",
     "release-it": "^15.1.3",
+    "ts-jest": "^28.0.7",
     "typescript": "^4.7.4"
   }
 }
