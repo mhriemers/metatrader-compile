@@ -20,6 +20,6 @@ jobs:
       - name: Perform npm tasks
         run: npm run ci
       - name: Install MetaTrader ${{ matrix.version }} using default options
-        uses: mhriemers@setup-metatrader@v1
+        uses: mhriemers/setup-metatrader@v1
         with:
           version: ${{ matrix.version }}
