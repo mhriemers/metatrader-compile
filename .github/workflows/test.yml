@@ -6,8 +6,12 @@ on:
 
 jobs:
   build-and-test:
+    strategy:
+      matrix:
+        os: [windows-latest]
+        version: [4, 5]
     name: Build and Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -15,3 +19,7 @@ jobs:
           node-version: 16
       - name: Perform npm tasks
         run: npm run ci
+      - name: Install MetaTrader ${{ matrix.version }} using default options
+        uses: mhriemers@setup-metatrader@v1
+        with:
+          version: ${{ matrix.version }}

@@ -1,7 +1,11 @@
-name: 'Run MetaTrader Action'
-description: 'Run MetaTrader compiler and backtester'
+name: 'Run MetaTrader'
+description: 'Run MetaTrader Terminal or Editor'
 author: 'Martijn Riemers'
 
 runs:
   using: 'node16'
   main: 'dist/index.js'
+
+branding:
+  icon: 'bar-chart'
+  color: 'green'
