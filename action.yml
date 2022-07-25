@@ -10,6 +10,10 @@ inputs:
     description: 'Additional directory to include for compilation'
     required: false
 
+outputs:
+  results:
+    description: 'Compilation results including output binary'
+
 runs:
   using: 'node16'
   main: 'dist/index.js'
