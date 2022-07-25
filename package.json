@@ -22,9 +22,11 @@
 		"@actions/core": "^1.9.0",
 		"@actions/exec": "^1.1.1",
 		"@actions/io": "^1.1.2",
+		"glob": "^8.0.3",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
+		"@types/glob": "^7.2.0",
 		"@types/jest": "^28.1.6",
 		"@vercel/ncc": "^0.34.0",
 		"jest": "^28.1.3",

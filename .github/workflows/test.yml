@@ -17,9 +17,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Perform npm tasks
-        run: npm run ci
       - name: Install MetaTrader ${{ matrix.version }} using default options
         uses: mhriemers/setup-metatrader@v1
         with:
           version: ${{ matrix.version }}
+      - name: Perform npm tasks
+        run: npm run ci
