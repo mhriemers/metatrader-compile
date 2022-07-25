@@ -8,22 +8,10 @@ import {glob} from 'glob'
 
 const g = util.promisify(glob)
 
-export interface CommandOptions {
-  file?: string
-  directory?: string
-  include?: string
-}
-
-export async function execCommand(
-  cmd: string,
-  options: CommandOptions
-): Promise<void> {
-  switch (cmd) {
-    case 'compile':
-      return compile(options)
-    default:
-      throw new Error('Unknown command!')
-  }
+export interface CompilationResult {
+  errors: number
+  warnings: number
+  elapsed: number
 }
 
 async function getPath(names: string[], errorName: string): Promise<string> {
@@ -36,7 +24,10 @@ async function getMetaEditorPath(): Promise<string> {
   return getPath(['metaeditor', 'metaeditor64'], 'MetaEditor')
 }
 
-async function compileFile(file: string, include?: string): Promise<void> {
+export async function compileFile(
+  file: string,
+  include?: string
+): Promise<CompilationResult> {
   const metaEditorPath = await getMetaEditorPath()
 
   const args = ['/log', `/compile:${file}`]
@@ -54,49 +45,36 @@ async function compileFile(file: string, include?: string): Promise<void> {
   })
   const logBuffer = await fs.readFile(logPath)
   const log = logBuffer.toString('utf16le')
-  core.debug(log)
+  core.info(log)
 
   const regex =
     /Result: (?<errors>\d+) errors, (?<warnings>\d+) warnings, (?<elapsed>\d+) msec elapsed/
   const matches = log.match(regex)
-  if (matches) {
-    if (matches.groups) {
-      const stats = `${matches.groups.errors} errors, ${matches.groups.warnings} warnings, ${matches.groups.elapsed} msec elapsed`
-      if (parseInt(matches.groups.errors) > 0) {
-        throw new Error(`Compilation failed, ${stats}`)
-      } else {
-        core.info(`Compilation succesful, ${stats}`)
-      }
-    } else {
-      throw new Error('RegEx error, no capture groups!')
-    }
-  } else {
-    throw new Error('RegEx error, no matches!')
+
+  if (!matches) throw new Error('RegEx error, no matches!')
+  if (!matches.groups) throw new Error('RegEx error, no groups!')
+
+  const result = {
+    errors: parseInt(matches.groups.errors),
+    warnings: parseInt(matches.groups.warnings),
+    elapsed: parseInt(matches.groups.elapsed)
   }
 
   await io.rmRF(logPath)
+
+  return result
 }
 
-async function compileDirectory(dir: string, include?: string): Promise<void> {
+export async function compileDirectory(
+  dir: string,
+  include?: string
+): Promise<Map<string, CompilationResult>> {
   const files = await g(`${dir}/**/*.mq{4,5}`)
-  return files.reduce(
-    async (p, file) => p.then(() => compileFile(file)),
-    Promise.resolve()
-  )
-}
-
-async function compile(options: CommandOptions): Promise<void> {
-  if (options.file && options.directory) {
-    throw new Error('File and directory cannot both be specified!')
+  const res = new Map<string, CompilationResult>()
+  for (const file of files) {
+    const result = await compileFile(file, include)
+    res.set(file, result)
   }
 
-  if (options.file) {
-    return compileFile(options.file, options.include)
-  }
-
-  if (options.directory) {
-    return compileDirectory(options.directory, options.include)
-  }
-
-  throw new Error('No file or directory specified!')
+  return res
 }

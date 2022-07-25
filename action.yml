@@ -1,5 +1,5 @@
-name: 'Run MetaTrader'
-description: 'Run MetaTrader Terminal or Editor'
+name: 'Run MetaTrader Compiler'
+description: 'Run MetaTrader Compiler'
 author: 'Martijn Riemers'
 
 runs:

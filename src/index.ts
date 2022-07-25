@@ -1,16 +1,50 @@
 import * as core from '@actions/core'
-import * as metatrader from './metatrader'
+import {CompilationResult, compileFile, compileDirectory} from './metatrader'
 
-export {metatrader}
+function formatCompilationResult(res: CompilationResult): string {
+  return `errors: ${res.errors}, warnings: ${res.warnings}, elapsed: ${res.elapsed} msec`
+}
 
 async function run() {
-  const command = core.getInput('command')
-  const options = {
-    file: core.getInput('file'),
-    directory: core.getInput('directory'),
-    include: core.getInput('include')
+  const file = core.getInput('file')
+  const directory = core.getInput('directory')
+  const include = core.getInput('include')
+
+  if (file && directory) {
+    throw new Error('File and directory cannot both be specified!')
   }
-  await metatrader.execCommand(command, options)
+
+  if (file) {
+    const result = await compileFile(file, include)
+    if (result.errors > 0) {
+      core.info(`Compilation successful: ${formatCompilationResult(result)}`)
+    } else {
+      core.setFailed(`Compilation failed: ${formatCompilationResult(result)}`)
+    }
+  }
+
+  if (directory) {
+    const results = await compileDirectory(directory, include)
+    let errors = 0
+    for (const [file, result] of results) {
+      errors += result.errors
+      if (result.errors > 0) {
+        core.info(
+          `[${file}] Compilation successful: ${formatCompilationResult(result)}`
+        )
+      } else {
+        core.error(
+          `[${file}] Compilation failed: ${formatCompilationResult(result)}`
+        )
+      }
+    }
+
+    if (errors > 0) {
+      throw new Error(`Directory compilation failed with ${errors} errors!`)
+    }
+  }
+
+  throw new Error('No file or directory specified!')
 }
 
 if (require.main === module) {

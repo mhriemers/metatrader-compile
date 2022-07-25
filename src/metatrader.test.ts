@@ -1,43 +1,45 @@
 import * as metatrader from './metatrader'
 
-const metatraderTest = (version: number) => {
-  if (process.env.METATRADER_VERSION == version.toString()) {
-    return test
-  } else {
-    return test.failing
-  }
-}
-
 describe('metaeditor compilation', () => {
-  metatraderTest(4)('it compiles Test1.mq4 succesfully', async () => {
-    await expect(
-      metatrader.execCommand('compile', {
-        file: '.ci/Test1.mq4'
-      })
-    ).resolves.toBe(undefined)
+  test('it compiles Test1.mq4 successfully on MetaTrader 4', async () => {
+    const res = await metatrader.compileFile('.ci/Test1.mq4')
+
+    if (process.env.METATRADER_VERSION == '4') {
+      expect(res.errors).toBe(0)
+      expect(res.warnings).toBe(1)
+    }
+
+    if (process.env.METATRADER_VERSION == '5') {
+      expect(res.errors).toBe(1)
+      expect(res.warnings).toBe(0)
+    }
   })
 
-  metatraderTest(5)('it compiles Test2.mq5 succesfully', async () => {
-    await expect(
-      metatrader.execCommand('compile', {
-        file: '.ci/Test2.mq5'
-      })
-    ).resolves.toBe(undefined)
+  test('it compiles Test2.mq5 successfully on MetaTrader 5', async () => {
+    const res = await metatrader.compileFile('.ci/Test2.mq5')
+
+    if (process.env.METATRADER_VERSION == '4') {
+      expect(res.errors).toBe(1)
+      expect(res.warnings).toBe(0)
+    }
+
+    if (process.env.METATRADER_VERSION == '5') {
+      expect(res.errors).toBe(0)
+      expect(res.warnings).toBe(1)
+    }
   })
 
-  test('it does not compile Test3.mq4', async () => {
-    await expect(
-      metatrader.execCommand('compile', {
-        file: '.ci/Test3.mq4'
-      })
-    ).rejects.toThrow()
+  test('it does not compile Test3.mq4 on both version', async () => {
+    const res = await metatrader.compileFile('.ci/Test3.mq4')
+
+    expect(res.errors).toBe(1)
+    expect(res.warnings).toBe(0)
   })
 
-  test('it does not compile Test4.mq5', async () => {
-    await expect(
-      metatrader.execCommand('compile', {
-        file: '.ci/Test4.mq5'
-      })
-    ).rejects.toThrow()
+  test('it does not compile Test4.mq5 on both version', async () => {
+    const res = await metatrader.compileFile('.ci/Test4.mq5')
+
+    expect(res.errors).toBe(1)
+    expect(res.warnings).toBe(0)
   })
 })
