@@ -4,7 +4,7 @@ const metatraderTest = (version: number) => {
   if (process.env.METATRADER_VERSION == version.toString()) {
     return test
   } else {
-    return test.skip
+    return test.failing
   }
 }
 
@@ -23,5 +23,21 @@ describe('metaeditor compilation', () => {
         file: '.ci/Test2.mq5'
       })
     ).resolves.toBe(undefined)
+  })
+
+  test('it does not compile Test3.mq4', async () => {
+    await expect(
+      metatrader.execCommand('compile', {
+        file: '.ci/Test3.mq4'
+      })
+    ).rejects.toThrow()
+  })
+
+  test('it does not compile Test4.mq5', async () => {
+    await expect(
+      metatrader.execCommand('compile', {
+        file: '.ci/Test4.mq5'
+      })
+    ).rejects.toThrow()
   })
 })

@@ -4,9 +4,9 @@
 #property strict
 
 int OnInit() {
-  Print("Simulate a warning " + 4)
+  Print("Simulate an error")
 
-  return (INIT_SUCCEEDED);
+//   return (INIT_SUCCEEDED);
 }
 
 void OnDeinit(const int reason) {}

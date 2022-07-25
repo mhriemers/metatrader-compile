@@ -54,7 +54,27 @@ async function compileFile(file: string, include?: string): Promise<void> {
   })
   const logBuffer = await fs.readFile(logPath)
   const log = logBuffer.toString('utf16le')
-  core.info(log)
+  core.debug(log)
+
+  const regex =
+    /Result: (?<errors>\d+) errors, (?<warnings>\d+) warnings, (?<elapsed>\d+) msec elapsed/
+  const matches = log.match(regex)
+  if (matches) {
+    if (matches.groups) {
+      const stats = `${matches.groups.errors} errors, ${matches.groups.warnings} warnings, ${matches.groups.elapsed} msec elapsed`
+      if (parseInt(matches.groups.errors) > 0) {
+        throw new Error(`Compilation failed, ${stats}`)
+      } else {
+        core.info(`Compilation succesful, ${stats}`)
+      }
+    } else {
+      throw new Error('RegEx error, no capture groups!')
+    }
+  } else {
+    throw new Error('RegEx error, no matches!')
+  }
+
+  await io.rmRF(logPath)
 }
 
 async function compileDirectory(dir: string, include?: string): Promise<void> {

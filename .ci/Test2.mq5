@@ -4,6 +4,7 @@
 #property strict
 
 int OnInit() {
+  Print("Simulate a warning " + 5)
 
   return (INIT_SUCCEEDED);
 }
