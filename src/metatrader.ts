@@ -1,11 +1,10 @@
 import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as exec from '@actions/exec'
-import { promises as fs } from 'fs'
+import {promises as fs} from 'fs'
 import * as util from 'util'
 import * as path from 'path'
-import { glob } from 'glob'
-import * as readline from 'readline'
+import {glob} from 'glob'
 
 const g = util.promisify(glob)
 
@@ -15,19 +14,20 @@ export interface CommandOptions {
   include?: string
 }
 
-export async function execCommand(cmd: string, options: CommandOptions): Promise<void> {
+export async function execCommand(
+  cmd: string,
+  options: CommandOptions
+): Promise<void> {
   switch (cmd) {
     case 'compile':
       return compile(options)
+    default:
+      throw new Error('Unknown command!')
   }
 }
 
 async function getPath(names: string[], errorName: string): Promise<string> {
-  return Promise.any(
-    names.map(name => {
-      return io.which(name, true)
-    })
-  ).catch(() => {
+  return Promise.any(names.map(name => io.which(name, true))).catch(() => {
     throw new Error(`${errorName} binary not found!`)
   })
 }
@@ -52,23 +52,17 @@ async function compileFile(file: string, include?: string): Promise<void> {
   await exec.exec(`"${metaEditorPath}"`, args, {
     ignoreReturnCode: true
   })
-  const logFile = await fs.open(logPath)
-  const rl = readline.createInterface({
-    input: logFile.createReadStream(),
-    crlfDelay: Infinity
-  });
-  for await (const line of rl) {
-    core.info(line)
-  }
+  const logBuffer = await fs.readFile(logPath)
+  const log = logBuffer.toString('utf16le')
+  core.info(log)
 }
 
 async function compileDirectory(dir: string, include?: string): Promise<void> {
   const files = await g(`${dir}/**/*.mq{4,5}`)
-  return files.reduce(async (p, file) => {
-    return p.then(() => {
-      return compileFile(file)
-    });
-  }, Promise.resolve());
+  return files.reduce(
+    async (p, file) => p.then(() => compileFile(file)),
+    Promise.resolve()
+  )
 }
 
 async function compile(options: CommandOptions): Promise<void> {

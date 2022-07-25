@@ -1,15 +1,27 @@
 import * as metatrader from './metatrader'
 
-describe('metaeditor compilation', () => {
-    test('it compiles Test1.mq4 succesfully', async () => {
-        return expect(metatrader.execCommand('compile', {
-            file: '.ci/Test1.mq4'
-        })).resolves
-    })
+const metatraderTest = (version: number) => {
+  if (process.env.METATRADER_VERSION == version.toString()) {
+    return test
+  } else {
+    return test.skip
+  }
+}
 
-    test('it compiles Test2.mq5 succesfully', async () => {
-        return expect(metatrader.execCommand('compile', {
-            file: '.ci/Test2.mq5'
-        })).resolves
-    })
+describe('metaeditor compilation', () => {
+  metatraderTest(4)('it compiles Test1.mq4 succesfully', async () => {
+    await expect(
+      metatrader.execCommand('compile', {
+        file: '.ci/Test1.mq4'
+      })
+    ).resolves.toBe(undefined)
+  })
+
+  metatraderTest(5)('it compiles Test2.mq5 succesfully', async () => {
+    await expect(
+      metatrader.execCommand('compile', {
+        file: '.ci/Test2.mq5'
+      })
+    ).resolves.toBe(undefined)
+  })
 })

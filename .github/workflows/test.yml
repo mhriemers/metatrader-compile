@@ -23,3 +23,5 @@ jobs:
           version: ${{ matrix.version }}
       - name: Perform npm tasks
         run: npm run ci
+        env:
+          METATRADER_VERSION: ${{ matrix.version }}
