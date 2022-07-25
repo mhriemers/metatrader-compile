@@ -31,7 +31,7 @@ jobs:
 
 ## Run MetaTrader Compiler
 
-When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MetaTrader Compile** action as `mhriemers/metatrader-compile@v1`. The action accepts the following input.
+When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MetaTrader Compiler** action as `mhriemers/metatrader-compile@v1`. The action accepts the following input.
 
 | Input     | Description                                                                                                                                                                                                               |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
