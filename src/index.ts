@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import {CompilationResult, compileFile, compileDirectory} from './metatrader'
 
 function formatCompilationResult(res: CompilationResult): string {
-  return `errors: ${res.errors}, warnings: ${res.warnings}, elapsed: ${res.elapsed} msec`
+  return `errors: ${res.errors}, warnings: ${res.warnings}`
 }
 
 async function run() {

@@ -48,7 +48,7 @@ export async function compileFile(
 
   const regex =
     /[Rr]esult:? (?<errors>\d+) errors, (?<warnings>\d+) warnings/
-  let matches = log.match(regex)
+  const matches = log.match(regex)
 
   if (!matches) throw new Error('RegEx error, no matches!')
   if (!matches.groups) throw new Error('RegEx error, no groups!')
