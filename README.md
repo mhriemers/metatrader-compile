@@ -31,10 +31,10 @@ jobs:
 
 When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MetaTrader Compile** action as `mhriemers/metatrader-compile@v1`. The action accepts the following input.
 
-| Input           | Description                                                                         |
-| --------------- | ----------------------------------------------------------------------------------- |
-| `files`         | (Required) Expert Advisors and Indicators to compile.                               |
-| `installer_url` | (Optional) Additional MetaTrader installation directory to include for compilation. |
+| Input     | Description                                                                                                                                                                                                               |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `files`   | (Required) Expert Advisors and Indicators to compile. You can specify a single file or glob for compilation.                                                                                                              |
+| `include` | (Optional) Additional MetaTrader installation directory to include for compilation. See the [MetaTrader documentation](https://www.metatrader5.com/en/metaeditor/help/beginning/integration_ide) about the folder layout. |
 
 ## License
 
