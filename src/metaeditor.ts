@@ -12,21 +12,19 @@ export interface CompilationResult {
   output?: string
 }
 
-async function getPath(names: string[], errorName: string): Promise<string> {
-  return Promise.any(names.map(name => io.which(name, true))).catch(() => {
-    throw new Error(`${errorName} binary not found!`)
+async function getPath(): Promise<string> {
+  return Promise.any(
+    ['metaeditor', 'metaeditor64'].map(name => io.which(name, true))
+  ).catch(() => {
+    throw new Error(`MetaEditor binary not found!`)
   })
-}
-
-async function getMetaEditorPath(): Promise<string> {
-  return getPath(['metaeditor', 'metaeditor64'], 'MetaEditor')
 }
 
 async function compileFile(
   file: string,
   include?: string
 ): Promise<CompilationResult> {
-  const metaEditorPath = await getMetaEditorPath()
+  const metaEditorPath = await getPath()
 
   const args = ['/log', `/compile:${file}`]
   if (include) {

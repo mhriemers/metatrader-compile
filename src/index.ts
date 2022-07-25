@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
-import {CompilationResult, compileFiles} from './metatrader'
+import {CompilationResult, compileFiles} from './metaeditor'
 
-export * from './metatrader'
+export * from './metaeditor'
 
 function formatCompilationResult(result: CompilationResult): string {
   return `errors: ${result.errors}, warnings: ${result.warnings}`

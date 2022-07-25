@@ -1,9 +1,9 @@
-import * as metatrader from './metatrader'
+import {compileFiles} from './metaeditor'
 import * as path from 'path'
 
 describe('metaeditor compilation', () => {
   test('it compiles Test1.mq4 successfully on MetaTrader 4', async () => {
-    const res = await metatrader.compileFiles('.ci/Test1.mq4')
+    const res = await compileFiles('.ci/Test1.mq4')
 
     expect(res.length).toBe(1)
 
@@ -20,7 +20,7 @@ describe('metaeditor compilation', () => {
   })
 
   test('it compiles Test2.mq5 successfully on MetaTrader 5', async () => {
-    const res = await metatrader.compileFiles('.ci/Test2.mq5')
+    const res = await compileFiles('.ci/Test2.mq5')
 
     expect(res.length).toBe(1)
 
@@ -37,7 +37,7 @@ describe('metaeditor compilation', () => {
   })
 
   test('it does not compile Test3.mq4 on both version', async () => {
-    const res = await metatrader.compileFiles('.ci/Test3.mq4')
+    const res = await compileFiles('.ci/Test3.mq4')
 
     expect(res.length).toBe(1)
 
@@ -53,7 +53,7 @@ describe('metaeditor compilation', () => {
   })
 
   test('it does not compile Test4.mq5 on both version', async () => {
-    const res = await metatrader.compileFiles('.ci/Test4.mq5')
+    const res = await compileFiles('.ci/Test4.mq5')
 
     expect(res.length).toBe(1)
 

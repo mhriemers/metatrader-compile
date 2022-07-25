@@ -6,6 +6,9 @@ inputs:
   files:
     description: 'Files to compile'
     required: true
+  include:
+    description: 'Additional directory to include for compilation'
+    required: false
 
 runs:
   using: 'node16'
