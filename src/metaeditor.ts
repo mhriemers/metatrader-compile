@@ -16,7 +16,7 @@ async function getPath(): Promise<string> {
   return Promise.any(
     ['metaeditor', 'metaeditor64'].map(name => io.which(name, true))
   ).catch(() => {
-    throw new Error(`MetaEditor binary not found!`)
+    throw new Error('MetaEditor binary not found!')
   })
 }
 
@@ -36,7 +36,7 @@ async function compileFile(
   const logPath = path.join(fileParsed.dir, `${fileParsed.name}.log`)
   await io.rmRF(logPath)
 
-  await exec.exec(`"${metaEditorPath}"`, args, {
+  await exec.exec(metaEditorPath, args, {
     ignoreReturnCode: true
   })
   const logBuffer = await fs.readFile(logPath)
