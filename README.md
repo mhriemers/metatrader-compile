@@ -2,7 +2,7 @@
 
 [![Build and Test](https://github.com/mhriemers/metatrader-compile/actions/workflows/test.yml/badge.svg)](https://github.com/mhriemers/metatrader-compile/actions/workflows/test.yml)
 
-The [Run MetaTrader Compiler](#run-metatrader-compiler) action enables you to compile Expert Advisors and Indicators on a [self-hosted](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) or [GitHub-hosted](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners) runner.
+The [Run MetaTrader Compiler](#run-metatrader-compiler) action enables you to compile Expert Advisors and Indicators on a [self-hosted](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) or [GitHub-hosted](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners) runner. The action currently only supports running on Windows.
 
 ## Usage Example
 
