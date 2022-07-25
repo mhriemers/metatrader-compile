@@ -48,18 +48,21 @@ async function compileFile(file: string, include?: string): Promise<void> {
   const logPath = path.join(fileParsed.dir, `${fileParsed.name}.log`)
   await io.rmRF(logPath)
 
-  await exec.exec(`"${metaEditorPath}"`, args)
-  
+  await exec.exec(`"${metaEditorPath}"`, args, {
+    ignoreReturnCode: true
+  })
+
   const log = (await fs.readFile(logPath)).toString()
   core.info(log)
 }
 
 async function compileDirectory(dir: string, include?: string): Promise<void> {
   const files = await g(`${dir}/**/*.mq{4,5}`)
-  files.forEach(async file => {
-    // Compile files in sync, need to test if parallel compilation is possible
-    await compileFile(file, include)
-  })
+  return files.reduce(async (p, file) => {
+    return p.then(() => {
+      return compileFile(file)
+    });
+  }, Promise.resolve());
 }
 
 async function compile(options: CommandOptions): Promise<void> {
