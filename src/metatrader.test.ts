@@ -1,4 +1,5 @@
 import * as metatrader from './metatrader'
+import * as path from 'path'
 
 describe('metaeditor compilation', () => {
   test('it compiles Test1.mq4 successfully on MetaTrader 4', async () => {
@@ -9,7 +10,7 @@ describe('metaeditor compilation', () => {
     if (process.env.METATRADER_VERSION == '4') {
       expect(res[0].errors).toBe(0)
       expect(res[0].warnings).toBe(1)
-      expect(res[0].output).toBe('.ci/Test1.ex4')
+      expect(res[0].output).toBe(path.join(process.cwd(), '.ci/Test1.ex4'))
     }
 
     if (process.env.METATRADER_VERSION == '5') {
@@ -31,7 +32,7 @@ describe('metaeditor compilation', () => {
     if (process.env.METATRADER_VERSION == '5') {
       expect(res[0].errors).toBe(0)
       expect(res[0].warnings).toBe(1)
-      expect(res[0].output).toBe('.ci/Test2.ex5')
+      expect(res[0].output).toBe(path.join(process.cwd(), '.ci/Test2.ex5'))
     }
   })
 
