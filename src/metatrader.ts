@@ -5,6 +5,7 @@ import { promises as fs } from 'fs'
 import * as util from 'util'
 import * as path from 'path'
 import { glob } from 'glob'
+import * as readline from 'readline'
 
 const g = util.promisify(glob)
 
@@ -51,9 +52,14 @@ async function compileFile(file: string, include?: string): Promise<void> {
   await exec.exec(`"${metaEditorPath}"`, args, {
     ignoreReturnCode: true
   })
-
-  const log = (await fs.readFile(logPath)).toString()
-  core.info(log)
+  const logFile = await fs.open(logPath)
+  const rl = readline.createInterface({
+    input: logFile.createReadStream(),
+    crlfDelay: Infinity
+  });
+  for await (const line of rl) {
+    core.info(line)
+  }
 }
 
 async function compileDirectory(dir: string, include?: string): Promise<void> {
