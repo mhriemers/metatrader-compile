@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-release:
-    name: Build and release
+    name: Build and Release
     runs-on: ubuntu-latest
     steps:
       # Configure runner with the right stuff
@@ -22,6 +22,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: Install MetaTrader 4 using default options
+        uses: mhriemers/setup-metatrader@v1
+        with:
+          version: 4
 
       # Call `npm version`. It increments the version and commits the changes.
       # We'll save the output (new version string) for use in the following
@@ -39,6 +43,8 @@ jobs:
       # Now carry on, business as usual
       - name: Perform npm tasks
         run: npm run ci
+        env:
+          METATRADER_VERSION: 4
 
       # Create a detached commit containing the built artifacts and tag it with
       # the release. Note: the fact that the branch is locally updated will not
