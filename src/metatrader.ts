@@ -46,8 +46,7 @@ export async function compileFile(
   const log = logBuffer.toString('utf16le')
   core.info(log)
 
-  const regex =
-    /[Rr]esult:? (?<errors>\d+) errors, (?<warnings>\d+) warnings/
+  const regex = /[Rr]esult:? (?<errors>\d+) errors, (?<warnings>\d+) warnings/
   const matches = log.match(regex)
 
   if (!matches) throw new Error('RegEx error, no matches!')
