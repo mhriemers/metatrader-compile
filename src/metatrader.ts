@@ -1,16 +1,15 @@
 import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as exec from '@actions/exec'
-import {promises as fs} from 'fs'
-import * as util from 'util'
+import * as glob from '@actions/glob'
+import {promises as fs, constants} from 'fs'
 import * as path from 'path'
-import {glob} from 'glob'
-
-const g = util.promisify(glob)
 
 export interface CompilationResult {
   errors: number
   warnings: number
+  input: string
+  output?: string
 }
 
 async function getPath(names: string[], errorName: string): Promise<string> {
@@ -23,7 +22,7 @@ async function getMetaEditorPath(): Promise<string> {
   return getPath(['metaeditor', 'metaeditor64'], 'MetaEditor')
 }
 
-export async function compileFile(
+async function compileFile(
   file: string,
   include?: string
 ): Promise<CompilationResult> {
@@ -52,9 +51,24 @@ export async function compileFile(
   if (!matches) throw new Error('RegEx error, no matches!')
   if (!matches.groups) throw new Error('RegEx error, no groups!')
 
-  const result = {
+  const result: CompilationResult = {
     errors: parseInt(matches.groups.errors),
-    warnings: parseInt(matches.groups.warnings)
+    warnings: parseInt(matches.groups.warnings),
+    input: file
+  }
+
+  const compiledExtension = `.ex${fileParsed.ext.slice(-1)}`
+  const compiledPath = path.join(
+    fileParsed.dir,
+    `${fileParsed.name}${compiledExtension}`
+  )
+  try {
+    await fs.access(compiledPath, constants.R_OK)
+    result.output = compiledPath
+  } catch (e) {
+    if (result.errors == 0) {
+      throw new Error('Compiled binary not available!')
+    }
   }
 
   // Remove log file
@@ -63,16 +77,16 @@ export async function compileFile(
   return result
 }
 
-export async function compileDirectory(
-  dir: string,
+export async function compileFiles(
+  files: string,
   include?: string
-): Promise<Map<string, CompilationResult>> {
-  const files = await g(`${dir}/**/*.mq{4,5}`)
-  const res = new Map<string, CompilationResult>()
-  for (const file of files) {
+): Promise<CompilationResult[]> {
+  const globber = await glob.create(files)
+  const results = []
+  for await (const file of globber.globGenerator()) {
     const result = await compileFile(file, include)
-    res.set(file, result)
+    results.push(result)
   }
 
-  return res
+  return results
 }

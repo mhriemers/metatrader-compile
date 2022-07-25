@@ -1,50 +1,47 @@
 import * as core from '@actions/core'
-import {CompilationResult, compileFile, compileDirectory} from './metatrader'
+import {CompilationResult, compileFiles} from './metatrader'
 
-function formatCompilationResult(res: CompilationResult): string {
-  return `errors: ${res.errors}, warnings: ${res.warnings}`
+export * from './metatrader'
+
+function formatCompilationResult(result: CompilationResult): string {
+  return `errors: ${result.errors}, warnings: ${result.warnings}`
+}
+
+function printCompilationResult(result: CompilationResult): void {
+  if (result.errors > 0) {
+    core.info(
+      `[${result.input}] Compilation successful: ${formatCompilationResult(
+        result
+      )}`
+    )
+    core.info(`[${result.input}] Binary available at: ${result.output}`)
+  } else {
+    core.error(
+      `[${result.input}] Compilation failed: ${formatCompilationResult(result)}`
+    )
+  }
 }
 
 async function run() {
-  const file = core.getInput('file')
-  const directory = core.getInput('directory')
+  const files = core.getInput('files')
   const include = core.getInput('include')
 
-  if (file && directory) {
-    throw new Error('File and directory cannot both be specified!')
-  }
-
-  if (file) {
-    const result = await compileFile(file, include)
-    if (result.errors > 0) {
-      core.info(`Compilation successful: ${formatCompilationResult(result)}`)
-    } else {
-      core.setFailed(`Compilation failed: ${formatCompilationResult(result)}`)
-    }
-  }
-
-  if (directory) {
-    const results = await compileDirectory(directory, include)
+  if (files) {
+    const results = await compileFiles(files, include)
     let errors = 0
-    for (const [file, result] of results) {
+    for (const result of results) {
       errors += result.errors
-      if (result.errors > 0) {
-        core.info(
-          `[${file}] Compilation successful: ${formatCompilationResult(result)}`
-        )
-      } else {
-        core.error(
-          `[${file}] Compilation failed: ${formatCompilationResult(result)}`
-        )
-      }
+      printCompilationResult(result)
     }
 
     if (errors > 0) {
-      throw new Error(`Directory compilation failed with ${errors} errors!`)
+      throw new Error(`Compilation failed with ${errors} errors!`)
     }
+
+    core.setOutput('results', results)
   }
 
-  throw new Error('No file or directory specified!')
+  throw new Error('No files specified!')
 }
 
 if (require.main === module) {

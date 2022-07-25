@@ -2,6 +2,11 @@ name: 'Run MetaTrader Compiler'
 description: 'Run MetaTrader Compiler'
 author: 'Martijn Riemers'
 
+inputs:
+  files:
+    description: 'Files to compile'
+    required: true
+
 runs:
   using: 'node16'
   main: 'dist/index.js'
