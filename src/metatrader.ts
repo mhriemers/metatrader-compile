@@ -38,9 +38,9 @@ async function getMetaEditorPath(): Promise<string> {
 async function compileFile(file: string, include?: string): Promise<void> {
   const metaEditorPath = await getMetaEditorPath()
 
-  const args = ['/log', `/compile:"${file}"`]
+  const args = ['/log', `/compile:${file}`]
   if (include) {
-    args.push(`/inc:"${include}"`)
+    args.push(`/inc:${include}`)
   }
 
   // Make sure any existing log files are removed
