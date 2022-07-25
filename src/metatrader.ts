@@ -11,7 +11,6 @@ const g = util.promisify(glob)
 export interface CompilationResult {
   errors: number
   warnings: number
-  elapsed: number
 }
 
 async function getPath(names: string[], errorName: string): Promise<string> {
@@ -48,18 +47,18 @@ export async function compileFile(
   core.info(log)
 
   const regex =
-    /Result: (?<errors>\d+) errors, (?<warnings>\d+) warnings, (?<elapsed>\d+) msec elapsed/
-  const matches = log.match(regex)
+    /[Rr]esult:? (?<errors>\d+) errors, (?<warnings>\d+) warnings/
+  let matches = log.match(regex)
 
   if (!matches) throw new Error('RegEx error, no matches!')
   if (!matches.groups) throw new Error('RegEx error, no groups!')
 
   const result = {
     errors: parseInt(matches.groups.errors),
-    warnings: parseInt(matches.groups.warnings),
-    elapsed: parseInt(matches.groups.elapsed)
+    warnings: parseInt(matches.groups.warnings)
   }
 
+  // Remove log file
   await io.rmRF(logPath)
 
   return result

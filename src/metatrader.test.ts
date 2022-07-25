@@ -20,7 +20,7 @@ describe('metaeditor compilation', () => {
 
     if (process.env.METATRADER_VERSION == '4') {
       expect(res.errors).toBe(1)
-      expect(res.warnings).toBe(0)
+      expect(res.warnings).toBe(1)
     }
 
     if (process.env.METATRADER_VERSION == '5') {
@@ -39,7 +39,7 @@ describe('metaeditor compilation', () => {
   test('it does not compile Test4.mq5 on both version', async () => {
     const res = await metatrader.compileFile('.ci/Test4.mq5')
 
-    expect(res.errors).toBe(1)
+    expect(res.errors).toBe(2)
     expect(res.warnings).toBe(0)
   })
 })
