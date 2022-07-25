@@ -36,7 +36,7 @@ async function compileFile(
   const logPath = path.join(fileParsed.dir, `${fileParsed.name}.log`)
   await io.rmRF(logPath)
 
-  await exec.exec(metaEditorPath, args, {
+  await exec.exec(`"${metaEditorPath}"`, args, {
     ignoreReturnCode: true
   })
   const logBuffer = await fs.readFile(logPath)
