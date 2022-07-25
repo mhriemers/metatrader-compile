@@ -4,7 +4,7 @@
 #property strict
 
 int OnInit() {
-  Print("Simulate an error")
+  Print("Simulate an error");
 
 //   return (INIT_SUCCEEDED);
 }
