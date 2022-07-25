@@ -48,8 +48,8 @@ async function compileFile(file: string, include?: string): Promise<void> {
   const logPath = path.join(fileParsed.dir, `${fileParsed.name}.log`)
   await io.rmRF(logPath)
 
-  exec.exec(`"${metaEditorPath}"`, args)
-
+  await exec.exec(`"${metaEditorPath}"`, args)
+  
   const log = (await fs.readFile(logPath)).toString()
   core.info(log)
 }
