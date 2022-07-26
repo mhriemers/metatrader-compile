@@ -9,8 +9,13 @@ on:
         required: true
 
 jobs:
-  build-and-release:
-    name: Build and Release
+  build-and-test:
+    name: Build and Test
+    uses: .github/workflows/bat.yml
+  release:
+    name: Release
+    needs:
+      - build-and-test
     runs-on: ubuntu-latest
     steps:
       # Configure runner with the right stuff
@@ -35,7 +40,6 @@ jobs:
       # Now carry on, business as usual
       - run: npm run clean
       - run: npm ci
-      - run: npm run test:unit
       - run: npm run build
       - run: npm run package
 
