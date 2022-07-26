@@ -11,6 +11,7 @@ jobs:
       matrix:
         os: [windows-latest]
         version: [4, 5]
+    name: Build and Test (MT${{ matrix.version }}, ${{ matrix.version }})
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
