@@ -32,13 +32,13 @@ jobs:
           VERSION=$(npm version "${{ github.event.inputs.npm-version-arg }}")
           echo "::set-output name=version::$VERSION"
 
-      # Update the branch with the new commit
-      - name: Push new version
-        run: git push
-
       # Now carry on, business as usual
       - name: Perform npm tasks
         run: npm run ci
+
+      # Update the branch with the new commit, after tests pass
+      - name: Push new version
+        run: git push
 
       # Create a detached commit containing the built artifacts and tag it with
       # the release. Note: the fact that the branch is locally updated will not
