@@ -10,7 +10,6 @@ on:
 
 jobs:
   build-and-test:
-    name: Build and Test
     uses: ./.github/workflows/bat.yml
   release:
     name: Release
