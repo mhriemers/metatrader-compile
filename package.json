@@ -11,7 +11,7 @@
 		"format-check": "prettier --check .",
 		"build": "tsc",
 		"package": "ncc build --minify",
-		"test": "jest --detectOpenHandles",
+		"test": "jest",
 		"all": "npm test && npm run build && npm run package",
 		"ci": "npm run clean && npm ci && npm run all"
 	},
