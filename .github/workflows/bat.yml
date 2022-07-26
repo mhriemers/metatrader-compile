@@ -11,7 +11,7 @@ jobs:
       matrix:
         os: [windows-latest]
         version: [4, 5]
-    name: ${{ matrix.os }} - MetaTrader ${{ matrix.version }}
+    name: Build and Test - MetaTrader ${{ matrix.version }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
