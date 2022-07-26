@@ -17,13 +17,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Perform npm tasks
-        run: npm run ci
+      - run: npm run clean
+      - run: npm ci
+      - run: npm run test:unit
+      - run: npm run build
+      - run: npm run package
       - name: Install MetaTrader ${{ matrix.version }} using default options
         uses: mhriemers/setup-metatrader@v1
         with:
           version: ${{ matrix.version }}
-      - name: Run integration tests
-        run: npm run test:int
+      - run: npm run test:int
         env:
           METATRADER_VERSION: ${{ matrix.version }}

@@ -33,8 +33,11 @@ jobs:
           echo "::set-output name=version::$VERSION"
 
       # Now carry on, business as usual
-      - name: Perform npm tasks
-        run: npm run ci
+      - run: npm run clean
+      - run: npm ci
+      - run: npm run test:unit
+      - run: npm run build
+      - run: npm run package
 
       # Update the branch with the new commit, after tests pass
       - name: Push new version
