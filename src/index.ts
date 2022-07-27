@@ -24,7 +24,9 @@ function printCompilationResult(result: CompilationResult): void {
 
 async function run() {
   const files = core.getInput('files')
-  const include = core.getInput('include')
+  const include = core.getInput('include', {
+    required: true
+  })
 
   if (files) {
     const results = await compileFiles(files, include)
