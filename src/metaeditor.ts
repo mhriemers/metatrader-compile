@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as exec from '@actions/exec'
 import * as glob from '@actions/glob'
-import {promises as fs, constants} from 'fs'
+import {constants, promises as fs} from 'fs'
 import * as path from 'path'
 
 export interface CompilationResult {

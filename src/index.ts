@@ -23,27 +23,23 @@ function printCompilationResult(result: CompilationResult): void {
 }
 
 async function run() {
-  const files = core.getInput('files')
-  const include = core.getInput('include', {
+  const files = core.getInput('files', {
     required: true
   })
+  const include = core.getInput('include')
 
-  if (files) {
-    const results = await compileFiles(files, include)
-    let errors = 0
-    for (const result of results) {
-      errors += result.errors
-      printCompilationResult(result)
-    }
-
-    if (errors > 0) {
-      throw new Error(`Compilation failed with ${errors} errors!`)
-    }
-
-    core.setOutput('results', results)
+  const results = await compileFiles(files, include)
+  let errors = 0
+  for (const result of results) {
+    errors += result.errors
+    printCompilationResult(result)
   }
 
-  throw new Error('No files specified!')
+  if (errors > 0) {
+    throw new Error(`Compilation failed with ${errors} errors!`)
+  }
+
+  core.setOutput('results', results)
 }
 
 if (require.main === module) {
