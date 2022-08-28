@@ -52,6 +52,8 @@ jobs:
       - run: npm run test:unit
       - run: npm run build
       - run: npm run package
-      - run: npm run --unsafe-perm=true test:int
+      # Fix for issue npm/cli#4589
+      - run: chown -R 1001:121 "$WINEPREFIX"
+      - run: npm run test:int
         env:
           METATRADER_VERSION: ${{ matrix.version }}
