@@ -13,11 +13,17 @@ export interface CompilationResult {
 }
 
 async function getPath(): Promise<string> {
-  return Promise.any(
-    ['metaeditor', 'metaeditor64'].map(name => io.which(name, true))
-  ).catch(() => {
-    throw new Error('MetaEditor binary not found!')
-  })
+  if (process.env.MT_EDITOR_PATH) {
+    core.info(`Found $MT_EDITOR_PATH: ${process.env.MT_EDITOR_PATH}`)
+    return process.env.MT_EDITOR_PATH
+  } else {
+    core.info(`$MT_EDITOR_PATH not found, falling back to path resolution.`)
+    return Promise.any(
+      ['metaeditor', 'metaeditor64'].map(name => io.which(name, true))
+    ).catch(() => {
+      throw new Error('MetaEditor binary not found!')
+    })
+  }
 }
 
 async function checkExecutable(metaEditorPath: string): Promise<any> {
