@@ -44,8 +44,8 @@ jobs:
     container: mhriemers/metatrader-${{ matrix.version }}:latest
     steps:
       - run: |
-          echo User ID [UID]: $(id -u)
-          echo Group ID [GID]: $(id -g)
+          ls -la /root/
+          ls -la /root/.wine/
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
