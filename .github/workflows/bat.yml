@@ -41,9 +41,7 @@ jobs:
         version: [4, 5]
     name: Build and Test (Docker)
     runs-on: ${{ matrix.os }}
-    container: 
-      image: mhriemers/metatrader-${{ matrix.version }}:latest
-      options: --user root
+    container: mhriemers/metatrader-${{ matrix.version }}:latest
     steps:
       - run: whoami
       - uses: actions/checkout@v3
@@ -55,6 +53,6 @@ jobs:
       - run: npm run test:unit
       - run: npm run build
       - run: npm run package
-      - run: npm run test:int
+      - run: npm run --unsafe-perm=true test:int
         env:
           METATRADER_VERSION: ${{ matrix.version }}
