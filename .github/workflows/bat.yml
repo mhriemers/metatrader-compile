@@ -53,6 +53,5 @@ jobs:
       - run: npm run build
       - run: npm run package
       # Fix for issue npm/cli#4589
-      - run: chown -R 1001:121 "$WINEPREFIX"
-      - run: ls -nd "$WINEPREFIX"
+      - run: chown -R root:root .
       - run: npm run test:int
