@@ -20,11 +20,21 @@ async function getPath(): Promise<string> {
   })
 }
 
+async function checkExecutable(
+  metaEditorPath: string
+): Promise<any> {
+  return fs.access(
+    metaEditorPath,
+    constants.X_OK
+  )
+}
+
 async function compileFile(
   file: string,
   include?: string
 ): Promise<CompilationResult> {
   const metaEditorPath = await getPath()
+  await checkExecutable(metaEditorPath)
 
   const args = ['/log', `/compile:${file}`]
   if (include) {
