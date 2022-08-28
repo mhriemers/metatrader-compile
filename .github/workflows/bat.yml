@@ -45,9 +45,7 @@ jobs:
       image: mhriemers/metatrader-${{ matrix.version }}:latest
       options: --user root
     steps:
-      - run: |
-          ls -la /root/
-          ls -la /root/.wine/
+      - run: whoami
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
