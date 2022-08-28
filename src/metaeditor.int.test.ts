@@ -7,13 +7,13 @@ describe('metaeditor compilation', () => {
 
     expect(res.length).toBe(1)
 
-    if (process.env.METATRADER_VERSION == '4') {
+    if (process.env.MT_VERSION == '4') {
       expect(res[0].errors).toBe(0)
       expect(res[0].warnings).toBe(1)
       expect(res[0].output).toBe(path.join(process.cwd(), '.ci/Test1.ex4'))
     }
 
-    if (process.env.METATRADER_VERSION == '5') {
+    if (process.env.MT_VERSION == '5') {
       expect(res[0].errors).toBe(1)
       expect(res[0].warnings).toBe(1)
     }
@@ -24,12 +24,12 @@ describe('metaeditor compilation', () => {
 
     expect(res.length).toBe(1)
 
-    if (process.env.METATRADER_VERSION == '4') {
+    if (process.env.MT_VERSION == '4') {
       expect(res[0].errors).toBe(1)
       expect(res[0].warnings).toBe(1)
     }
 
-    if (process.env.METATRADER_VERSION == '5') {
+    if (process.env.MT_VERSION == '5') {
       expect(res[0].errors).toBe(0)
       expect(res[0].warnings).toBe(1)
       expect(res[0].output).toBe(path.join(process.cwd(), '.ci/Test2.ex5'))
@@ -41,11 +41,11 @@ describe('metaeditor compilation', () => {
 
     expect(res.length).toBe(1)
 
-    if (process.env.METATRADER_VERSION == '4') {
+    if (process.env.MT_VERSION == '4') {
       expect(res[0].errors).toBe(1)
     }
 
-    if (process.env.METATRADER_VERSION == '5') {
+    if (process.env.MT_VERSION == '5') {
       expect(res[0].errors).toBe(2)
     }
 
@@ -57,11 +57,11 @@ describe('metaeditor compilation', () => {
 
     expect(res.length).toBe(1)
 
-    if (process.env.METATRADER_VERSION == '4') {
+    if (process.env.MT_VERSION == '4') {
       expect(res[0].errors).toBe(2)
     }
 
-    if (process.env.METATRADER_VERSION == '5') {
+    if (process.env.MT_VERSION == '5') {
       expect(res[0].errors).toBe(1)
     }
 

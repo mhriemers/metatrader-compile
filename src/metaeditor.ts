@@ -20,13 +20,8 @@ async function getPath(): Promise<string> {
   })
 }
 
-async function checkExecutable(
-  metaEditorPath: string
-): Promise<any> {
-  return fs.access(
-    metaEditorPath,
-    constants.X_OK
-  )
+async function checkExecutable(metaEditorPath: string): Promise<any> {
+  return fs.access(metaEditorPath, constants.X_OK)
 }
 
 async function compileFile(

@@ -33,7 +33,7 @@ jobs:
           version: ${{ matrix.version }}
       - run: npm run test:int
         env:
-          METATRADER_VERSION: ${{ matrix.version }}
+          MT_VERSION: ${{ matrix.version }}
   build-and-test-docker:
     strategy:
       matrix:
@@ -54,6 +54,5 @@ jobs:
       - run: npm run package
       # Fix for issue npm/cli#4589
       - run: chown -R 1001:121 "$WINEPREFIX"
+      - run: ls -nd "$WINEPREFIX"
       - run: npm run test:int
-        env:
-          METATRADER_VERSION: ${{ matrix.version }}
