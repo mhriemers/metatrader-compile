@@ -14,8 +14,7 @@ jobs:
   release:
     name: Release
     needs:
-      - build-and-test-local
-      - build-and-test-docker
+      - build-and-test
     runs-on: ubuntu-latest
     steps:
       # Configure runner with the right stuff
