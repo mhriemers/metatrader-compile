@@ -41,7 +41,9 @@ jobs:
         version: [4, 5]
     name: Build and Test (Docker)
     runs-on: ${{ matrix.os }}
-    container: mhriemers/metatrader-${{ matrix.version }}:latest
+    container: 
+      image: mhriemers/metatrader-${{ matrix.version }}:latest
+      options: --user root
     steps:
       - run: |
           ls -la /root/
