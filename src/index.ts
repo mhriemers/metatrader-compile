@@ -9,16 +9,16 @@ function formatCompilationResult(result: CompilationResult): string {
 
 function printCompilationResult(result: CompilationResult): void {
   if (result.errors > 0) {
+    core.error(
+      `[${result.input}] Compilation failed: ${formatCompilationResult(result)}`
+    )
+  } else {
     core.info(
       `[${result.input}] Compilation successful: ${formatCompilationResult(
         result
       )}`
     )
     core.info(`[${result.input}] Binary available at: ${result.output}`)
-  } else {
-    core.error(
-      `[${result.input}] Compilation failed: ${formatCompilationResult(result)}`
-    )
   }
 }
 
