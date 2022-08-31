@@ -26,7 +26,7 @@
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
-		"@types/glob": "^7.2.0",
+		"@types/glob": "^8.0.0",
 		"@types/jest": "^28.1.8",
 		"@vercel/ncc": "^0.34.0",
 		"jest": "^28.1.3",
