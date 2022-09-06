@@ -23,7 +23,7 @@
 		"@actions/exec": "^1.1.1",
 		"@actions/glob": "^0.3.0",
 		"@actions/io": "^1.1.2",
-		"uuid": "^8.3.2"
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.2.0",
