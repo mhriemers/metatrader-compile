@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 error() {
   echo "::error::$1"
@@ -62,7 +61,7 @@ for f in "${expanded_files[@]}"; do
   output="${f%.*}.ex${f: -1}"
   rm -rf "$output"
   echo "[$f] Compiling..."
-  wine "$executable" "${args[@]}" "/compile:$f" || true
+  wine "$executable" "${args[@]}" "/compile:$f" &> /dev/null || true
   if [[ ! -f $log ]]; then
     error "[$f] Log file does not exist."
   fi
