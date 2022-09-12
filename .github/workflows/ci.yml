@@ -1,0 +1,75 @@
+name: Test and Release
+
+on:
+  push:
+    branches:
+      - 'main'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test warnings with MetaTrader 4
+        uses: ./
+        with:
+          version: 4
+          files: .ci/Test1.mq4
+      - name: Test warnings with MetaTrader 5
+        uses: ./
+        with:
+          version: 5
+          files: .ci/Test2.mq5
+      - name: Test errors with MetaTrader 4
+        uses: ./
+        with:
+          version: 4
+          files: .ci/Test3.mq4
+        continue-on-error: true
+      - name: Test errors with MetaTrader 5
+        uses: ./
+        with:
+          version: 5
+          files: .ci/Test4.mq5
+        continue-on-error: true
+      - uses: actions/upload-artifact@v3
+        with:
+          name: test
+          path: .ci
+        if: always()
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure git
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+      - id: get_version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "::set-output name=version::$VERSION"
+      - run: |
+          TAG=${{ steps.get_version.outputs.version }}
+          MAJOR_TAR=$(echo "$TAG" | cut -d '.' -f 1)
+          MINOR_TAG=$(echo "$TAG" | cut -d '.' -f 1,2)
+          git tag -f -a -m "Update $MAJOR_TAR" $MAJOR_TAR
+          git push origin $MAJOR_TAR --force
+          git tag -f -a -m "Update $MINOR_TAG" $MINOR_TAG
+          git push origin $MINOR_TAG --force
+      - name: Create the Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ steps.get_version.outputs.version }}
+          tag_name: ${{ steps.get_version.outputs.version }}
+          draft: true
+          prerelease: false

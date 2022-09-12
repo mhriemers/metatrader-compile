@@ -1,8 +1,12 @@
-name: 'Run MetaTrader Compiler'
-description: 'Run MetaTrader Compiler'
+name: 'Run MetaEditor Compiler'
+description: 'Run MetaEditor Compiler'
 author: 'Martijn Riemers'
 
 inputs:
+  version:
+    description: 'Version of MetaEditor to use'
+    required: false
+    default: '4'
   files:
     description: 'Files to compile'
     required: true
@@ -12,11 +16,15 @@ inputs:
 
 outputs:
   results:
-    description: 'Compilation results including output binary'
+    description: 'Compilation results for each compiled file'
 
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.version }}
+    - ${{ inputs.files }}
+    - ${{ inputs.include }}
 
 branding:
   icon: 'bar-chart'
