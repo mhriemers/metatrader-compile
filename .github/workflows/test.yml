@@ -1,0 +1,44 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - 'main'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compile Test1.mq4 with MetaTrader 4
+        uses: ./
+        with:
+          version: 4
+          files: .ci/Test1.mq4
+      - name: Compile Test2.mq5 with MetaTrader 5
+        uses: ./
+        with:
+          version: 4
+          files: .ci/Test2.mq5
+      - name: Compile Test3.mq4 with MetaTrader 4
+        uses: ./
+        with:
+          version: 4
+          files: .ci/Test3.mq4
+        continue-on-error: true
+      - name: Compile Test4.mq5 with MetaTrader 5
+        uses: ./
+        with:
+          version: 4
+          files: .ci/Test4.mq5
+        continue-on-error: true
+      - uses: actions/upload-artifact@v3
+        with:
+          name: test
+          path: .ci
+        if: always()
