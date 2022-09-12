@@ -93,5 +93,4 @@ for f in "${expanded_files[@]}"; do
       exit 1
     fi
   fi
-  rm -rf "$log"
 done
