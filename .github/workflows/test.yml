@@ -15,6 +15,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Compile Test1.mq4 with MetaTrader 4
         uses: ./
         with:
