@@ -19,6 +19,7 @@ RUN wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/win
     DEBIAN_FRONTEND="noninteractive" apt-get install -y --install-recommends winehq-$WINE_BRANCH && \
     rm -rf /var/lib/apt/lists/*
 
+ENV WINEPREFIX /root/.wine
 ENV WINEDLLOVERRIDES mscoree,mshtml=,winebrowser.exe=
 ENV WINEDEBUG warn-all,fixme-all,err-alsa,-ole,-toolbar
 ENV WINEARCH win64
