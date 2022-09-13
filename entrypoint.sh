@@ -5,7 +5,7 @@ set -e
 error() {
   echo -n "::error"
   if [[ -n "$2" && -n "$3" && -n "$4" ]]; then
-    echo -n " file=$2,line=$3,col=$4"
+    echo -n " file=$(echo "$2" | sed 's/\\/\//g'),line=$3,col=$4"
   fi
   echo "::$1"
 }
@@ -13,7 +13,7 @@ error() {
 warn() {
   echo -n "::warning"
   if [[ -n "$2" && -n "$3" && -n "$4" ]]; then
-    echo -n " file=$2,line=$3,col=$4"
+    echo -n " file=$(echo "$2" | sed 's/\\/\//g'),line=$3,col=$4"
   fi
   echo "::$1"
 }
