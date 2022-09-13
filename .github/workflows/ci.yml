@@ -53,13 +53,25 @@ jobs:
         with:
           version: 4
           files: .ci/TestInclude.mq4
-          include: .ci/MQL4
+          include: .ci/MQL
       - name: Test include with MetaTrader 5
         uses: ./
         with:
           version: 5
           files: .ci/TestInclude.mq5
-          include: .ci/MQL5
+          include: .ci/MQL
+      - name: Test include warning with MetaTrader 4
+        uses: ./
+        with:
+          version: 4
+          files: .ci/TestIncludeWarning.mq4
+          include: .ci/MQL
+      - name: Test include warning with MetaTrader 5
+        uses: ./
+        with:
+          version: 5
+          files: .ci/TestIncludeWarning.mq5
+          include: .ci/MQL
       - uses: actions/upload-artifact@v3
         with:
           name: test

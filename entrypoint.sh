@@ -5,7 +5,7 @@ set -e
 error() {
   echo -n "::error"
   if [[ -n "$2" && -n "$3" && -n "$4" ]]; then
-    echo -n " file=$2,line=$3,col=$4"
+    echo -n " file=$(echo "$2" | sed 's/\\/\//g'),line=$3,col=$4"
   fi
   echo "::$1"
 }
@@ -13,7 +13,7 @@ error() {
 warn() {
   echo -n "::warning"
   if [[ -n "$2" && -n "$3" && -n "$4" ]]; then
-    echo -n " file=$2,line=$3,col=$4"
+    echo -n " file=$(echo "$2" | sed 's/\\/\//g'),line=$3,col=$4"
   fi
   echo "::$1"
 }
@@ -76,10 +76,10 @@ for f in "${expanded_files[@]}"; do
   debug "$content"
   while IFS='=' read -r message _file row column; do
     warn "$message" "$_file" "$row" "$column"
-  done < <(echo "$content" | sed -rn 's/([[:alnum:]_/-\.]+)\(([[:digit:]]+),([[:digit:]]+)\) : warning [[:digit:]]+: (.*)$/\4=\1=\2=\3/p')
+  done < <(echo "$content" | sed -rn 's/^([[:alnum:].\/_-]+)\(([[:digit:]]+),([[:digit:]]+)\) : warning [[:digit:]]+: (.*)$/\4=\1=\2=\3/p')
   while IFS='=' read -r message _file row column; do
     error "$message" "$_file" "$row" "$column"
-  done < <(echo "$content" | sed -rn 's/([[:alnum:]_/-\.]+)\(([[:digit:]]+),([[:digit:]]+)\) : error [[:digit:]]+: (.*)$/\4=\1=\2=\3/p')
+  done < <(echo "$content" | sed -rn 's/^([[:alnum:].\/_-]+)\(([[:digit:]]+),([[:digit:]]+)\) : error [[:digit:]]+: (.*)$/\4=\1=\2=\3/p')
   IFS=' ' read -r errors warnings < <(echo "$content" | sed -rn 's/^[Rr]esult:? ([[:digit:]]+) errors, ([[:digit:]]+) warnings.*$/\1 \2/p')
   if [[ "$errors" -gt 0 ]]; then
     error "[$f] Compilation failed, $errors errors and $warnings warnings."
