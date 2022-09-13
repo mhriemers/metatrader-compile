@@ -3,14 +3,4 @@
 #property version   "1.00"
 #property strict
 
-#include <HelloWorld.mqh>
-
-int OnInit() {
-  HelloWorld();
-
-  return (INIT_SUCCEEDED);
-}
-
-void OnDeinit(const int reason) {}
-
-void OnTick() {}
+#include "TestInclude.mq5"

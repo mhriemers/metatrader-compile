@@ -3,12 +3,4 @@
 #property version   "1.00"
 #property strict
 
-int OnInit() {
-  Print("Simulate no warnings or errors");
-
-  return (INIT_SUCCEEDED);
-}
-
-void OnDeinit(const int reason) {}
-
-void OnTick() {}
+#include "TestNoWarningError.mq5"
