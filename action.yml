@@ -14,10 +14,6 @@ inputs:
     description: 'Additional directory to include for compilation'
     required: false
 
-outputs:
-  results:
-    description: 'Compilation results for each compiled file'
-
 runs:
   using: docker
   image: Dockerfile

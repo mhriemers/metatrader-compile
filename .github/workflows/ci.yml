@@ -16,28 +16,50 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Test no warnings or errors with MetaTrader 4
+        uses: ./
+        with:
+          version: 4
+          files: .ci/TestNoWarningError.mq4
+      - name: Test no warnings or errors with MetaTrader 5
+        uses: ./
+        with:
+          version: 5
+          files: .ci/TestNoWarningError.mq5
       - name: Test warnings with MetaTrader 4
         uses: ./
         with:
           version: 4
-          files: .ci/Test1.mq4
+          files: .ci/TestWarning.mq4
       - name: Test warnings with MetaTrader 5
         uses: ./
         with:
           version: 5
-          files: .ci/Test2.mq5
+          files: .ci/TestWarning.mq5
       - name: Test errors with MetaTrader 4
         uses: ./
         with:
           version: 4
-          files: .ci/Test3.mq4
+          files: .ci/TestError.mq4
         continue-on-error: true
       - name: Test errors with MetaTrader 5
         uses: ./
         with:
           version: 5
-          files: .ci/Test4.mq5
+          files: .ci/TestError.mq5
         continue-on-error: true
+      - name: Test include with MetaTrader 4
+        uses: ./
+        with:
+          version: 4
+          files: .ci/TestInclude.mq4
+          include: .ci/MQL4
+      - name: Test include with MetaTrader 5
+        uses: ./
+        with:
+          version: 5
+          files: .ci/TestInclude.mq5
+          include: .ci/MQL5
       - uses: actions/upload-artifact@v3
         with:
           name: test
@@ -62,8 +84,10 @@ jobs:
           TAG=${{ steps.get_version.outputs.version }}
           MAJOR_TAR=$(echo "$TAG" | cut -d '.' -f 1)
           MINOR_TAG=$(echo "$TAG" | cut -d '.' -f 1,2)
+          
           git tag -f -a -m "Update $MAJOR_TAR" $MAJOR_TAR
           git push origin $MAJOR_TAR --force
+          
           git tag -f -a -m "Update $MINOR_TAG" $MINOR_TAG
           git push origin $MINOR_TAG --force
       - name: Create the Release
