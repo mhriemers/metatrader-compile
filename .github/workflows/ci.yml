@@ -15,7 +15,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Test no warnings or errors with MetaTrader 4
         uses: ./
         with:
@@ -83,7 +83,7 @@ jobs:
     needs: test
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Configure git
         run: |
           git config user.name 'github-actions[bot]'
