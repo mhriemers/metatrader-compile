@@ -103,7 +103,7 @@ jobs:
           git tag -f -a -m "Update $MINOR_TAG" $MINOR_TAG
           git push origin $MINOR_TAG --force
       - name: Create the Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ steps.get_version.outputs.version }}
           tag_name: ${{ steps.get_version.outputs.version }}
