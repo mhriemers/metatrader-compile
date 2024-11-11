@@ -72,7 +72,7 @@ jobs:
           version: 5
           files: .ci/TestIncludeWarning.mq5
           include: .ci/MQL
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: test
           path: .ci
